@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey from SF to Delhi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 0;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .status-tip {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .status-tip-time {
+            font-weight: 600;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .status-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            padding: 16px 20px;
+            color: white;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .status-label {
+            font-size: 12px;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-tip {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .status-tip-time {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-content {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .status-journeys-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .status-journey {
+            margin-bottom: 0;
+        }
+
+        .status-journey-name {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .status-journey-details {
+            font-size: 14px;
+            opacity: 0.95;
+            margin-left: 0;
+        }
+
+        .status-journey-time {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-top: 4px;
+        }
+
+        .status-single {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .timezone-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .timezone-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        .timezone-options {
+            display: flex;
+            gap: 0;
+            border: 2px solid #667eea;
+            border-radius: 0;
+        }
+
+        .timezone-radio {
+            display: none;
+        }
+
+        .timezone-radio-label {
+            padding: 8px 16px;
+            background: white;
+            color: #667eea;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            border-right: 2px solid #667eea;
+        }
+
+        .timezone-radio-label:last-child {
+            border-right: none;
+        }
+
+        .timezone-radio:checked + .timezone-radio-label {
+            background: #667eea;
+            color: white;
+        }
+
+        .timezone-radio-label:hover {
+            background: #f8f9fa;
+        }
+
+        .timezone-radio:checked + .timezone-radio-label:hover {
+            background: #5568d3;
+        }
+
+        .timelines-container {
+            background: white;
+            border-radius: 0;
+            padding: 20px 40px 15px 40px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .summary-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 0;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: visible;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            opacity: 0.05;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+        }
+
+        .summary-card.luka-card::before {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="70" r="40" fill="%23764ba2"/><ellipse cx="85" cy="65" rx="8" ry="12" fill="white"/><ellipse cx="115" cy="65" rx="8" ry="12" fill="white"/><circle cx="85" cy="68" r="4" fill="%23333"/><circle cx="115" cy="68" r="4" fill="%23333"/><ellipse cx="100" cy="85" rx="8" ry="6" fill="%23333"/><path d="M 100 85 Q 90 95 80 90" stroke="%23333" stroke-width="3" fill="none"/><path d="M 100 85 Q 110 95 120 90" stroke="%23333" stroke-width="3" fill="none"/><ellipse cx="70" cy="50" rx="20" ry="30" fill="%23764ba2"/><ellipse cx="130" cy="50" rx="20" ry="30" fill="%23764ba2"/><ellipse cx="100" cy="130" rx="45" ry="60" fill="%23667eea"/><path d="M 70 110 L 60 160 L 70 170" stroke="%23667eea" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M 130 110 L 140 160 L 130 170" stroke="%23667eea" stroke-width="8" fill="none" stroke-linecap="round"/></svg>');
+        }
+
+        .summary-card.ar-card::before {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="70" cy="60" r="30" fill="%23f093fb"/><circle cx="130" cy="60" r="30" fill="%23667eea"/><ellipse cx="63" cy="55" rx="6" ry="8" fill="white"/><ellipse cx="77" cy="55" rx="6" ry="8" fill="white"/><ellipse cx="123" cy="55" rx="6" ry="8" fill="white"/><ellipse cx="137" cy="55" rx="6" ry="8" fill="white"/><circle cx="63" cy="57" r="3" fill="%23333"/><circle cx="77" cy="57" r="3" fill="%23333"/><circle cx="123" cy="57" r="3" fill="%23333"/><circle cx="137" cy="57" r="3" fill="%23333"/><path d="M 60 68 Q 70 73 80 68" stroke="%23333" stroke-width="2" fill="none"/><path d="M 120 68 Q 130 73 140 68" stroke="%23333" stroke-width="2" fill="none"/><ellipse cx="70" cy="110" rx="35" ry="50" fill="%23f093fb"/><ellipse cx="130" cy="110" rx="35" ry="50" fill="%23667eea"/><path d="M 50 100 L 40 150" stroke="%23f093fb" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M 90 100 L 100 150" stroke="%23f093fb" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M 110 100 L 100 150" stroke="%23667eea" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M 150 100 L 160 150" stroke="%23667eea" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M 85 90 L 115 90" stroke="%23764ba2" stroke-width="6" fill="none" stroke-linecap="round"/></svg>');
+        }
+
+        .summary-card-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .traveler-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-item .label {
+            font-size: 10px;
+            color: #999;
+            letter-spacing: 0.3px;
+            margin-bottom: 3px;
+        }
+
+        .summary-item .value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .timeline-wrapper {
+            margin-bottom: 30px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -40px;
+            right: -40px;
+            bottom: -20px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 0;
+        }
+
+        .timeline-wrapper > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 
+         * To add photos as backgrounds:
+         * 1. Place luka.png (Luka's photo) in the same directory as this HTML file
+         * 2. Place aditya-ruchi.png (Aditya and Ruchi's photo) in the same directory
+         * 3. Uncomment the CSS rules below
+         */
+        
+
+        /* .luka-journey::before {
+            background-image: url('luka.png');
+        }
+
+        .ar-journey::before {
+            background-image: url('aditya-ruchi.png');
+        } */
+
+
+        .journey-details-card {
+            background: rgba(248, 249, 250, 0.3);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 0;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .journey-details-card table {
+            margin-top: 0;
+        }
+
+        .journey-details-card tr {
+            transition: background 0.2s;
+        }
+
+        .journey-details-card tr.highlighted {
+            background: #fff3cd !important;
+            border-left: 4px solid #667eea;
+        }
+
+        .journey-details-card tr.highlighted td {
+            font-weight: 600;
+        }
+
+        .segment-label {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 0;
+            font-size: 10px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .segment-label.flight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .segment-label.layover {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .timeline-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 0.3px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-icon {
+            width: 32px;
+            height: 32px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .trip-summary-inline {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .summary-item-inline {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-item-inline .label {
+            font-size: 11px;
+            color: #999;
+            letter-spacing: 0.3px;
+            margin-bottom: 3px;
+        }
+
+        .summary-item-inline .value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .timeline {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            position: relative;
+        }
+
+        /* Add watercolor photo backgrounds */
+        .timeline.luka-timeline::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 300px;
+            height: 300px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><defs><filter id="watercolor"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.15 0"/></filter></defs><rect width="300" height="300" fill="%23764ba2" opacity="0.1" filter="url(%23watercolor)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .timeline.ar-timeline::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 300px;
+            height: 300px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><defs><filter id="watercolor2"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.15 0"/></filter></defs><rect width="300" height="300" fill="%23f093fb" opacity="0.1" filter="url(%23watercolor2)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .timeline-container {
+            position: relative;
+            height: 140px;
+            margin: 20px 60px 15px 60px;
+        }
+
+        .timeline-axis {
+            position: absolute;
+            top: 70px;
+            left: -60px;
+            right: -60px;
+            height: 2px;
+            background: #dee2e6;
+        }
+
+        .timeline-segment {
+            position: absolute;
+            top: 57px;
+            height: 26px;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            letter-spacing: 0.3px;
+        }
+
+        .timeline-segment:hover {
+            transform: translateY(-2px);
+            border-color: #333;
+        }
+
+        .timeline-segment.active {
+            border-color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .timeline-segment.in-progress {
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.6), 0 4px 12px rgba(0,0,0,0.3);
+            border-color: #667eea;
+            transform: translateY(-1px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-segment.layover-segment.in-progress {
+            box-shadow: 0 0 20px rgba(240, 147, 251, 0.6), 0 4px 12px rgba(0,0,0,0.3);
+            border-color: #f093fb;
+        }
+
+        /* Progress fill overlay showing elapsed portion */
+        .timeline-segment.in-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--progress, 0%);
+            background: rgba(255, 255, 255, 0.3);
+            z-index: 1;
+            pointer-events: none;
+            transition: width 0.3s ease;
+        }
+
+        /* Current time marker - per timeline chart */
+        .current-time-marker {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 44px; /* 40px segment + 4px */
+            width: 2px;
+            background: #000;
+            z-index: 100;
+            pointer-events: none;
+            display: none;
+        }
+
+        .current-time-marker.active {
+            display: block;
+        }
+
+        /* Ensure text stays above progress fill */
+        .timeline-segment.in-progress {
+            z-index: 2;
+        }
+
+        .timeline-segment.in-progress > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.85;
+            }
+        }
+
+        .flight-segment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .layover-segment {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+
+        .timeline-label {
+            position: absolute;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .timeline-label-top {
+            top: 0;
+        }
+
+        .timeline-label-bottom {
+            top: 90px;
+        }
+
+        .label-city {
+            font-weight: 600;
+            font-size: 13px;
+            color: #000;
+            margin-bottom: 3px;
+        }
+
+        .label-time {
+            font-size: 11px;
+            color: #080808;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .label-tz {
+            font-size: 11px;
+            color: #181818;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .label-date {
+            font-size: 11px;
+            color: #080808;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .details-card {
+            background: white;
+            border-radius: 0;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .details-card.active {
+            display: block;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .details-title {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .details-route {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .duration-badge {
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 0;
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .layover-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 0;
+            margin-bottom: 12px;
+        }
+
+        .layover-header h2 {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10px;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 12px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .event-col {
+            font-weight: 600;
+            color: #495057;
+            width: 25%;
+            white-space: nowrap;
+        }
+
+        .date-col {
+            color: #6c757d;
+            width: 12%;
+        }
+
+        .time-col {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #000;
+        }
+
+        .sf-time {
+            color: #000;
+        }
+
+        .fra-time {
+            color: #000;
+        }
+
+        .del-time {
+            color: #000;
+        }
+
+        .dxb-time {
+            color: #000;
+        }
+
+        .city-label {
+            font-size: 10px;
+            font-weight: 600;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .next-day {
+            font-size: 11px;
+            color: #dc3545;
+            font-style: italic;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            /* Prevent body horizontal scroll */
+            body {
+                overflow-x: hidden;
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            /* Header optimizations */
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+                gap: 10px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .title-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            /* Status tip - make static to avoid overlap */
+            .status-tip {
+                position: static;
+                font-size: 11px;
+                margin-top: 5px;
+            }
+
+            /* Summary cards - single column */
+            .summary-cards-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            .summary-card {
+                padding: 12px;
+            }
+
+            .summary-card-header {
+                font-size: 16px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .summary-item {
+                font-size: 12px;
+            }
+
+            .summary-item .value {
+                font-size: 14px;
+            }
+
+            /* Status displays */
+            .status-container {
+                padding: 12px 15px;
+                margin-bottom: 12px;
+            }
+
+            .status-content {
+                font-size: 14px;
+            }
+
+            .status-label {
+                font-size: 11px;
+            }
+
+            .status-journey-name {
+                font-size: 15px;
+            }
+
+            .status-journey-details {
+                font-size: 13px;
+            }
+
+            .status-journey-time {
+                font-size: 24px;
+            }
+
+            .status-journeys-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Timeline horizontal scrolling - PRIORITY */
+            .timelines-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 15px 10px;
+                margin-bottom: 12px;
+            }
+
+            .timeline-wrapper {
+                min-width: 800px;
+            }
+
+            .timeline-container {
+                min-width: 800px;
+                height: 220px;
+                margin: 20px 60px 15px 60px;
+            }
+
+            /* Timeline labels - keep readable */
+            .label-city {
+                font-size: 12px;
+            }
+
+            .label-time {
+                font-size: 11px;
+            }
+
+            .label-tz {
+                font-size: 11px;
+            }
+
+            .label-date {
+                font-size: 11px;
+            }
+
+            /* Timeline segments */
+            .timeline-segment {
+                font-size: 10px;
+                height: 24px;
+                top: 55px;
+            }
+
+            .timeline-axis {
+                top: 67px;
+            }
+
+            /* Current time markers */
+            .current-time-marker {
+                height: 40px;
+            }
+
+            /* Journey details tables - horizontal scrolling */
+            .journey-details-card {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 12px;
+            }
+
+            .journey-details-card table {
+                min-width: 800px;
+                font-size: 12px;
+            }
+
+            .event-col {
+                font-size: 11px;
+            }
+
+            .date-col {
+                font-size: 11px;
+            }
+
+            .time-col {
+                font-size: 11px;
+            }
+
+            .segment-label {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+
+            /* Timezone selector */
+            .timezone-selector {
+                gap: 10px;
+            }
+
+            .timezone-radio-label {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .timezone-label {
+                font-size: 10px;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .trip-summary-inline {
+                width: 100%;
+            }
+
+            .timezone-dropdown-container {
+                width: 100%;
+            }
+
+            .timezone-dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span>Journey from SF to Delhi and Pune</span>
+            </h1>
+            <div class="timezone-selector">
+                <label class="timezone-label">Timezone</label>
+                <div class="timezone-options">
+                    <input type="radio" id="tz-all" name="timezone" value="all" class="timezone-radio" checked>
+                    <label for="tz-all" class="timezone-radio-label">Auto</label>
+                    
+                    <input type="radio" id="tz-sf" name="timezone" value="sf" class="timezone-radio">
+                    <label for="tz-sf" class="timezone-radio-label">San Francisco (PST)</label>
+                    
+                    <input type="radio" id="tz-fra" name="timezone" value="fra" class="timezone-radio">
+                    <label for="tz-fra" class="timezone-radio-label">Frankfurt and Lyon (CET)</label>
+                    
+                    <input type="radio" id="tz-del" name="timezone" value="del" class="timezone-radio">
+                    <label for="tz-del" class="timezone-radio-label">Delhi (IST)</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey Cards (Merged Status + Summary) -->
+        <div class="summary-cards-container">
+            <div class="summary-card luka-card">
+                <!-- Journey Name -->
+                <div class="summary-card-header">
+                    <span>Luka</span>
+                </div>
+                <!-- Status Section -->
+                <div class="status-container">
+                    <div class="status-header">
+                        <span class="status-label" id="status-label-luka">Time to Flight:</span>
+                    </div>
+                    <div class="status-content" id="status-value-luka">--</div>
+                </div>
+                <!-- Summary Section -->
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Departure</div>
+                        <div class="value luka-departure" data-sf="Wed 14:40 PST" data-fra="Wed 23:40 CET" data-del="Thu 04:10 IST">Wed 14:40 PST</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Arrival</div>
+                        <div class="value luka-arrival" data-sf="Fri 12:00 PST" data-fra="Fri 21:00 CET" data-del="Sat 01:30 IST">Sat 01:30 IST</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Layover</div>
+                        <div class="value">Frankfurt 26h 50m</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Total Time</div>
+                        <div class="value">~45 hrs</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-card ar-card">
+                <!-- Status Tip -->
+                <div class="status-tip" id="status-tip">
+                    Current Status as of <span class="status-tip-time">--:--</span>
+                </div>
+                <!-- Journey Name -->
+                <div class="summary-card-header">
+                    <span>Aditya and Ruchi</span>
+                </div>
+                <!-- Status Section -->
+                <div class="status-container">
+                    <div class="status-header">
+                        <span class="status-label" id="status-label-ar">Time to Flight:</span>
+                    </div>
+                    <div class="status-content" id="status-value-ar">--</div>
+                </div>
+                <!-- Summary Section -->
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Departure</div>
+                        <div class="value ar-departure" data-sf="Wed 15:40 PST" data-fra="Thu 00:40 CET" data-del="Thu 05:10 IST">Wed 15:40 PST</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Arrival</div>
+                        <div class="value ar-arrival" data-sf="Thu 12:40 PST" data-fra="Thu 21:40 CET" data-del="Fri 02:10 IST">Fri 02:10 IST</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Layover</div>
+                        <div class="value">Dubai 2h 5m</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Total Time</div>
+                        <div class="value">~21 hrs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timelines-container">
+            <!-- Luka's Journey -->
+            <div class="timeline-wrapper luka-journey">
+                <div class="timeline-header">
+                    <span>Luka</span>
+                </div>
+                
+                <div class="timeline luka-timeline">
+                    <div class="timeline-container">
+                        <div class="current-time-marker" id="current-time-marker-luka"></div>
+                        <div class="timeline-axis"></div>
+                        
+                        <!-- SFO departure -->
+                        <div class="timeline-label timeline-label-top" style="left: 0%;">
+                            <div class="label-city">SFO</div>
+                            <div class="label-time luka-time" data-sf="14:40" data-fra="23:40" data-del="04:10">14:40 <span class="label-tz luka-tz" data-sf="PST" data-fra="CET" data-del="IST">PST</span></div>
+                            <div class="label-date">Wed Jan 21</div>
+                        </div>
+                        
+                        <!-- Flight 1: 10h 50m = 24.1% of 45hrs -->
+                        <div class="timeline-segment flight-segment" style="left: 0%; width: 24.1%;" data-section="flight1" data-traveler="luka">
+                            LH455 · 10h 50m
+                        </div>
+                        
+                        <!-- FRA arrival/departure -->
+                        <div class="timeline-label timeline-label-bottom" style="left: 24.1%;">
+                            <div class="label-city">FRA</div>
+                            <div class="label-time luka-time" data-sf="01:30" data-fra="10:30" data-del="15:00">10:30 <span class="label-tz luka-tz" data-sf="PST" data-fra="CET" data-del="IST">CET</span></div>
+                            <div class="label-date">Thu Jan 22</div>
+                        </div>
+                        
+                        <!-- Layover: 26h 50m = 59.6% of 45hrs -->
+                        <div class="timeline-segment layover-segment" style="left: 24.1%; width: 59.6%;" data-section="layover" data-traveler="luka">
+                            Layover · 26h 50m
+                        </div>
+                        
+                        <!-- FRA departure -->
+                        <div class="timeline-label timeline-label-top" style="left: 83.7%;">
+                            <div class="label-city">FRA</div>
+                            <div class="label-time luka-time" data-sf="04:20" data-fra="13:20" data-del="17:50">13:20 <span class="label-tz luka-tz" data-sf="PST" data-fra="CET" data-del="IST">CET</span></div>
+                            <div class="label-date">Fri Jan 23</div>
+                        </div>
+                        
+                        <!-- Flight 2: 7h 40m = 17% of 45hrs -->
+                        <div class="timeline-segment flight-segment" style="left: 83.7%; width: 16.3%;" data-section="flight2" data-traveler="luka">
+                            LH760 · 7h 40m
+                        </div>
+                        
+                        <!-- DEL arrival -->
+                        <div class="timeline-label timeline-label-bottom" style="left: 100%;">
+                            <div class="label-city">DEL</div>
+                            <div class="label-time luka-time" data-sf="12:00" data-fra="21:00" data-del="01:30">01:30 <span class="label-tz luka-tz" data-sf="PST" data-fra="CET" data-del="IST">IST</span></div>
+                            <div class="label-date">Sat Jan 24</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consolidated Journey Details -->
+                <div class="journey-details-card">
+                    <table>
+                        <thead>
+                            <tr class="table-header-all">
+                                <th class="event-col">Segment</th>
+                                <th class="date-col">Date</th>
+                                <th class="time-col sf-col"><span class="city-label">San Francisco</span>PST (UTC-8)</th>
+                                <th class="time-col fra-col"><span class="city-label">Frankfurt and Lyon</span>CET (UTC+1)</th>
+                                <th class="time-col del-col"><span class="city-label">Delhi</span>IST (UTC+5:30)</th>
+                            </tr>
+                            <tr class="table-header-single" style="display: none;">
+                                <th class="event-col">Segment</th>
+                                <th class="date-col">Date</th>
+                                <th class="time-col single-tz-col"><span class="city-label single-tz-label"></span><span class="single-tz-offset"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-segment="flight1">
+                                <td class="event-col"><span class="segment-label flight">Flight 1</span>LH455: SFO → FRA (10h 50m)</td>
+                                <td class="date-col">Wed 21 Jan</td>
+                                <td class="time-col sf-time sf-col">Depart 14:40</td>
+                                <td class="time-col fra-time fra-col">Depart 23:40</td>
+                                <td class="time-col del-time del-col">Depart 04:10 (Thu)</td>
+                            </tr>
+                            <tr data-segment="flight1">
+                                <td class="event-col"></td>
+                                <td class="date-col">Thu 22 Jan</td>
+                                <td class="time-col sf-time sf-col">Arrive 01:30</td>
+                                <td class="time-col fra-time fra-col">Arrive 10:30</td>
+                                <td class="time-col del-time del-col">Arrive 15:00</td>
+                            </tr>
+                            <tr data-segment="layover">
+                                <td class="event-col"><span class="segment-label layover">Layover</span>Frankfurt (26h 50m)</td>
+                                <td class="date-col">Thu-Fri</td>
+                                <td class="time-col sf-time sf-col">01:30 - 04:20</td>
+                                <td class="time-col fra-time fra-col">10:30 - 13:20</td>
+                                <td class="time-col del-time del-col">15:00 - 17:50</td>
+                            </tr>
+                            <tr data-segment="flight2">
+                                <td class="event-col"><span class="segment-label flight">Flight 2</span>LH760: FRA → DEL (7h 40m)</td>
+                                <td class="date-col">Fri 23 Jan</td>
+                                <td class="time-col sf-time sf-col">Depart 04:20</td>
+                                <td class="time-col fra-time fra-col">Depart 13:20</td>
+                                <td class="time-col del-time del-col">Depart 17:50</td>
+                            </tr>
+                            <tr data-segment="flight2">
+                                <td class="event-col"></td>
+                                <td class="date-col">Sat 24 Jan</td>
+                                <td class="time-col sf-time sf-col">Arrive 12:00 (Fri)</td>
+                                <td class="time-col fra-time fra-col">Arrive 21:00 (Fri)</td>
+                                <td class="time-col del-time del-col">Arrive 01:30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Aditya and Ruchi's Journey -->
+            <div class="timeline-wrapper ar-journey">
+                <div class="timeline-header">
+                    <span>Aditya and Ruchi</span>
+                </div>
+                
+                <div class="timeline ar-timeline">
+                    <div class="timeline-container">
+                        <div class="current-time-marker" id="current-time-marker-ar"></div>
+                        <div class="timeline-axis"></div>
+                        
+                        <!-- SFO departure: 1 hour after Luka = 2.2% -->
+                        <div class="timeline-label timeline-label-top" style="left: 2.2%;">
+                            <div class="label-city">SFO</div>
+                            <div class="label-time ar-time" data-sf="15:40" data-fra="00:40" data-del="05:10">15:40 <span class="label-tz ar-tz" data-sf="PST" data-fra="CET" data-del="IST">PST</span></div>
+                            <div class="label-date">Wed Jan 21</div>
+                        </div>
+                        
+                        <!-- Flight 1: 15h 45m = 35% of 45hrs -->
+                        <div class="timeline-segment flight-segment" style="left: 2.2%; width: 35%;" data-section="ar-flight1" data-traveler="ar">
+                            EK226 · 15h 45m
+                        </div>
+                        
+                        <!-- DXB arrival -->
+                        <div class="timeline-label timeline-label-bottom" style="left: 37.2%;">
+                            <div class="label-city">DXB</div>
+                            <div class="label-time ar-time" data-sf="03:25" data-fra="12:25" data-del="16:55">19:25 <span class="label-tz ar-tz" data-sf="PST" data-fra="CET" data-del="IST">GST</span></div>
+                            <div class="label-date">Thu Jan 22</div>
+                        </div>
+                        
+                        <!-- Layover: 2h 5m = 4.6% of 45hrs -->
+                        <div class="timeline-segment layover-segment" style="left: 37.2%; width: 4.6%;" data-section="ar-layover" data-traveler="ar">
+                            Layover · 2h 5m
+                        </div>
+                        
+                        <!-- DXB departure -->
+                        <div class="timeline-label timeline-label-top" style="left: 41.8%;">
+                            <div class="label-city">DXB</div>
+                            <div class="label-time ar-time" data-sf="05:30" data-fra="14:30" data-del="19:00">21:30 <span class="label-tz ar-tz" data-sf="PST" data-fra="CET" data-del="IST">GST</span></div>
+                            <div class="label-date">Thu Jan 22</div>
+                        </div>
+                        
+                        <!-- Flight 2: 3h 10m = 7% of 45hrs -->
+                        <div class="timeline-segment flight-segment" style="left: 41.8%; width: 7%;" data-section="ar-flight2" data-traveler="ar">
+                            EK512 · 3h 10m
+                        </div>
+                        
+                        <!-- DEL arrival -->
+                        <div class="timeline-label timeline-label-bottom" style="left: 48.8%;">
+                            <div class="label-city">DEL</div>
+                            <div class="label-time ar-time" data-sf="12:40" data-fra="21:40" data-del="02:10">02:10 <span class="label-tz ar-tz" data-sf="PST" data-fra="CET" data-del="IST">IST</span></div>
+                            <div class="label-date">Fri Jan 23</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consolidated Journey Details -->
+                <div class="journey-details-card">
+                    <table>
+                        <thead>
+                            <tr class="table-header-all">
+                                <th class="event-col">Segment</th>
+                                <th class="date-col">Date</th>
+                                <th class="time-col sf-col"><span class="city-label">San Francisco</span>PST (UTC-8)</th>
+                                <th class="time-col fra-col"><span class="city-label">Frankfurt and Lyon</span>CET (UTC+1)</th>
+                                <th class="time-col del-col"><span class="city-label">Delhi</span>IST (UTC+5:30)</th>
+                            </tr>
+                            <tr class="table-header-single" style="display: none;">
+                                <th class="event-col">Segment</th>
+                                <th class="date-col">Date</th>
+                                <th class="time-col single-tz-col"><span class="city-label single-tz-label"></span><span class="single-tz-offset"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-segment="ar-flight1">
+                                <td class="event-col"><span class="segment-label flight">Flight 1</span>A380 EK226: SFO → DXB (15h 45m)</td>
+                                <td class="date-col">Wed 21 Jan</td>
+                                <td class="time-col sf-time sf-col">Depart 15:40</td>
+                                <td class="time-col fra-time fra-col">Depart 00:40 (Thu)</td>
+                                <td class="time-col del-time del-col">Depart 05:10 (Thu)</td>
+                            </tr>
+                            <tr data-segment="ar-flight1">
+                                <td class="event-col"></td>
+                                <td class="date-col">Thu 22 Jan</td>
+                                <td class="time-col sf-time sf-col">Arrive 03:25</td>
+                                <td class="time-col fra-time fra-col">Arrive 12:25</td>
+                                <td class="time-col del-time del-col">Arrive 16:55</td>
+                            </tr>
+                            <tr data-segment="ar-layover">
+                                <td class="event-col"><span class="segment-label layover">Layover</span>Dubai (2h 5m)</td>
+                                <td class="date-col">Thu 22 Jan</td>
+                                <td class="time-col sf-time sf-col">03:25 - 05:30</td>
+                                <td class="time-col fra-time fra-col">12:25 - 14:30</td>
+                                <td class="time-col del-time del-col">16:55 - 19:00</td>
+                            </tr>
+                            <tr data-segment="ar-flight2">
+                                <td class="event-col"><span class="segment-label flight">Flight 2</span>B777 EK512: DXB → DEL (3h 10m)</td>
+                                <td class="date-col">Thu 22 Jan</td>
+                                <td class="time-col sf-time sf-col">Depart 05:30</td>
+                                <td class="time-col fra-time fra-col">Depart 14:30</td>
+                                <td class="time-col del-time del-col">Depart 19:00</td>
+                            </tr>
+                            <tr data-segment="ar-flight2">
+                                <td class="event-col"></td>
+                                <td class="date-col">Fri 23 Jan</td>
+                                <td class="time-col sf-time sf-col">Arrive 12:40 (Thu)</td>
+                                <td class="time-col fra-time fra-col">Arrive 21:40 (Thu)</td>
+                                <td class="time-col del-time del-col">Arrive 02:10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        const timezoneConfig = {
+            sf: { name: 'San Francisco', abbr: 'PST', offset: 'UTC-8' },
+            fra: { name: 'Frankfurt and Lyon', abbr: 'CET', offset: 'UTC+1' },
+            del: { name: 'Delhi', abbr: 'IST', offset: 'UTC+5:30' }
+        };
+
+        let currentTimezone = 'all';
+
+        // Test time override for console testing
+        let testTimeOverride = null;
+
+        // Flight data structure
+        const flightData = {
+            luka: {
+                name: 'Luka',
+                segments: [
+                    {
+                        name: 'Flight 1',
+                        description: 'LH455: SFO → FRA',
+                        duration: '10h 50m',
+                        departure: new Date('2026-01-21T14:40:00-08:00'), // PST
+                        arrival: new Date('2026-01-22T10:30:00+01:00'), // CET
+                        durationMs: 10 * 60 * 60 * 1000 + 50 * 60 * 1000,
+                        timelineSection: 'flight1'
+                    },
+                    {
+                        name: 'Layover',
+                        description: 'Frankfurt',
+                        duration: '26h 50m',
+                        departure: new Date('2026-01-22T10:30:00+01:00'), // CET
+                        arrival: new Date('2026-01-23T13:20:00+01:00'), // CET
+                        durationMs: 26 * 60 * 60 * 1000 + 50 * 60 * 1000,
+                        timelineSection: 'layover'
+                    },
+                    {
+                        name: 'Flight 2',
+                        description: 'LH760: FRA → DEL',
+                        duration: '7h 40m',
+                        departure: new Date('2026-01-23T13:20:00+01:00'), // CET
+                        arrival: new Date('2026-01-24T01:30:00+05:30'), // IST
+                        durationMs: 7 * 60 * 60 * 1000 + 40 * 60 * 1000,
+                        timelineSection: 'flight2'
+                    }
+                ]
+            },
+            ar: {
+                name: 'Aditya and Ruchi',
+                segments: [
+                    {
+                        name: 'Flight 1',
+                        description: 'EK226: SFO → DXB',
+                        duration: '15h 45m',
+                        departure: new Date('2026-01-21T15:40:00-08:00'), // PST
+                        arrival: new Date('2026-01-22T19:25:00+04:00'), // GST
+                        durationMs: 15 * 60 * 60 * 1000 + 45 * 60 * 1000,
+                        timelineSection: 'ar-flight1'
+                    },
+                    {
+                        name: 'Layover',
+                        description: 'Dubai',
+                        duration: '2h 5m',
+                        departure: new Date('2026-01-22T19:25:00+04:00'), // GST
+                        arrival: new Date('2026-01-22T21:30:00+04:00'), // GST
+                        durationMs: 2 * 60 * 60 * 1000 + 5 * 60 * 1000,
+                        timelineSection: 'ar-layover'
+                    },
+                    {
+                        name: 'Flight 2',
+                        description: 'EK512: DXB → DEL',
+                        duration: '3h 10m',
+                        departure: new Date('2026-01-22T21:30:00+04:00'), // GST
+                        arrival: new Date('2026-01-23T02:10:00+05:30'), // IST
+                        durationMs: 3 * 60 * 60 * 1000 + 10 * 60 * 1000,
+                        timelineSection: 'ar-flight2'
+                    }
+                ]
+            }
+        };
+
+        // Get current time (either real or test override)
+        function getCurrentTime() {
+            return testTimeOverride || new Date();
+        }
+
+        // Update status tip time
+        function updateStatusTip() {
+            const now = getCurrentTime();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            // Get date
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const dayName = dayNames[now.getDay()];
+            const monthName = monthNames[now.getMonth()];
+            const day = now.getDate();
+            const dateStr = `${dayName} ${monthName} ${day}`;
+            
+            // Get timezone abbreviation
+            const timeZoneName = Intl.DateTimeFormat('en', { 
+                timeZoneName: 'short' 
+            }).formatToParts(now).find(part => part.type === 'timeZoneName')?.value || '';
+            
+            const tipEl = document.getElementById('status-tip');
+            if (tipEl) {
+                tipEl.innerHTML = `Current Status as of <span class="status-tip-time">${dateStr}, ${hours}:${minutes} ${timeZoneName}</span>`;
+            }
+        }
+
+        // Update status tip immediately and then every minute
+        updateStatusTip();
+        setInterval(updateStatusTip, 60000); // Update every minute
+
+        // Format time duration
+        function formatDuration(ms) {
+            const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+
+            if (days > 0) {
+                return `${days}d ${hours}h ${minutes}m`;
+            } else if (hours > 0) {
+                return `${hours}h ${minutes}m`;
+            } else {
+                return `${minutes}m`;
+            }
+        }
+
+        // Find active segment for a traveler
+        function findActiveSegment(traveler) {
+            const now = getCurrentTime();
+            for (const segment of traveler.segments) {
+                if (now >= segment.departure && now < segment.arrival) {
+                    return segment;
+                }
+            }
+            return null;
+        }
+
+        // Update current time marker position
+        // Update current time marker position for a specific timeline
+        function updateTimelineMarker(travelerData, markerId, referenceStart, referenceDuration) {
+            const now = getCurrentTime();
+            const markerEl = document.getElementById(markerId);
+            if (!markerEl) return;
+            
+            // Calculate position based on this traveler's timeline
+            const firstDeparture = travelerData.segments[0].departure;
+            const finalArrival = travelerData.segments[travelerData.segments.length - 1].arrival;
+            
+            // Only show marker if we're within this timeline's range
+            if (now < firstDeparture || now > finalArrival) {
+                markerEl.classList.remove('active');
+                return;
+            }
+            
+            // Calculate position as percentage of the visual timeline
+            // Visual timeline uses the reference duration (e.g., 45 hours from Luka's departure)
+            const positionFromReference = now - referenceStart;
+            const positionPercent = (positionFromReference / referenceDuration) * 100;
+            
+            markerEl.style.left = `${positionPercent}%`;
+            markerEl.classList.add('active');
+        }
+
+        // Update current time marker positions
+        function updateCurrentTimeMarker() {
+            // Use Luka's timeline as the reference (45 hours total) for both timelines
+            const referenceStart = flightData.luka.segments[0].departure;
+            const referenceEnd = flightData.luka.segments[flightData.luka.segments.length - 1].arrival;
+            const referenceDuration = referenceEnd - referenceStart;
+            
+            // Update markers using the same reference timeline
+            updateTimelineMarker(flightData.luka, 'current-time-marker-luka', referenceStart, referenceDuration);
+            updateTimelineMarker(flightData.ar, 'current-time-marker-ar', referenceStart, referenceDuration);
+        }
+
+        // Update status for a single journey
+        function updateJourneyStatus(traveler, travelerData, labelId, valueId) {
+            const now = getCurrentTime();
+            const statusLabelEl = document.getElementById(labelId);
+            const statusValueEl = document.getElementById(valueId);
+            
+            if (!statusLabelEl || !statusValueEl) return;
+            
+            const firstDeparture = travelerData.segments[0].departure;
+            const finalArrival = travelerData.segments[travelerData.segments.length - 1].arrival;
+            const arrived = now >= finalArrival;
+            
+            // Check if before first departure
+            if (now < firstDeparture) {
+                // Remove in-progress classes for this traveler's segments
+                document.querySelectorAll(`.timeline-segment[data-traveler="${traveler.toLowerCase()}"]`).forEach(seg => {
+                    seg.classList.remove('in-progress');
+                    seg.style.setProperty('--progress', '0%');
+                });
+                
+                const diff = firstDeparture - now;
+                statusLabelEl.textContent = 'Time to flight:';
+                statusValueEl.className = 'status-content';
+                statusValueEl.innerHTML = `<div class="status-journey-time">${formatDuration(diff)}</div>`;
+                return;
+            }
+            
+            // Check if arrived
+            if (arrived) {
+                // Remove in-progress classes for this traveler's segments
+                document.querySelectorAll(`.timeline-segment[data-traveler="${traveler.toLowerCase()}"]`).forEach(seg => {
+                    seg.classList.remove('in-progress');
+                    seg.style.setProperty('--progress', '0%');
+                });
+                
+                const diff = now - finalArrival;
+                statusLabelEl.textContent = 'After landing:';
+                statusValueEl.className = 'status-content';
+                statusValueEl.innerHTML = `<div class="status-journey-time">${formatDuration(diff)}</div><div class="status-journey-details">ago</div>`;
+                return;
+            }
+            
+            // Check for active segment (in flight or layover)
+            const activeSegment = findActiveSegment(travelerData);
+            if (activeSegment) {
+                const elapsed = now - activeSegment.departure;
+                const remaining = activeSegment.arrival - now;
+                const isLayover = activeSegment.name === 'Layover';
+                const statusText = isLayover ? 'Layover' : 'In flight';
+                
+                // Highlight active timeline segment with progress visualization
+                document.querySelectorAll(`.timeline-segment[data-traveler="${traveler.toLowerCase()}"]`).forEach(seg => {
+                    seg.classList.remove('in-progress');
+                    seg.style.setProperty('--progress', '0%');
+                });
+                
+                const timelineSeg = document.querySelector(`.timeline-segment[data-section="${activeSegment.timelineSection}"]`);
+                if (timelineSeg) {
+                    timelineSeg.classList.add('in-progress');
+                    const progressPercent = (elapsed / activeSegment.durationMs) * 100;
+                    timelineSeg.style.setProperty('--progress', `${Math.min(100, Math.max(0, progressPercent))}%`);
+                }
+                
+                statusLabelEl.textContent = `${statusText}:`;
+                statusValueEl.className = 'status-content';
+                statusValueEl.innerHTML = `
+                    <div class="status-journey-details">${activeSegment.description}</div>
+                    <div class="status-journey-time">${formatDuration(elapsed)}</div>
+                    <div class="status-journey-details">elapsed, ${formatDuration(remaining)} remaining</div>
+                `;
+                return;
+            }
+            
+            // Between segments (shouldn't happen, but handle gracefully)
+            statusLabelEl.textContent = 'Status:';
+            statusValueEl.className = 'status-content status-single';
+            statusValueEl.textContent = 'Between segments';
+        }
+
+        // Update flight status display
+        function updateFlightStatus() {
+            // Update each journey independently
+            updateJourneyStatus('Luka', flightData.luka, 'status-label-luka', 'status-value-luka');
+            updateJourneyStatus('Aditya & Ruchi', flightData.ar, 'status-label-ar', 'status-value-ar');
+            // Update current time marker
+            updateCurrentTimeMarker();
+        }
+
+        // Update status immediately
+        updateFlightStatus();
+        
+        // Update every second for real-time updates
+        setInterval(updateFlightStatus, 1000);
+
+        // Timeline segment hover and click handlers
+        document.querySelectorAll('.timeline-segment').forEach(segment => {
+            const sectionId = segment.getAttribute('data-section');
+            
+            // Hover handler
+            segment.addEventListener('mouseenter', function() {
+                highlightSegment(sectionId);
+            });
+            
+            segment.addEventListener('mouseleave', function() {
+                unhighlightAll();
+            });
+            
+            // Click handler (makes highlight persistent)
+            segment.addEventListener('click', function() {
+                // Remove active class from all segments
+                document.querySelectorAll('.timeline-segment').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked segment
+                this.classList.add('active');
+                
+                // Highlight and scroll to corresponding rows
+                highlightSegment(sectionId, true);
+                
+                // Scroll to the details
+                const firstRow = document.querySelector(`tr[data-segment="${sectionId}"]`);
+                if (firstRow) {
+                    firstRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        });
+
+        function highlightSegment(sectionId, persistent = false) {
+            // Remove all highlights first
+            unhighlightAll();
+            
+            // Highlight matching rows
+            document.querySelectorAll(`tr[data-segment="${sectionId}"]`).forEach(row => {
+                row.classList.add('highlighted');
+                if (persistent) {
+                    row.setAttribute('data-persistent', 'true');
+                }
+            });
+        }
+
+        function unhighlightAll() {
+            document.querySelectorAll('tr.highlighted').forEach(row => {
+                if (!row.getAttribute('data-persistent')) {
+                    row.classList.remove('highlighted');
+                }
+            });
+        }
+
+        // Clear persistent highlights when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.timeline-segment')) {
+                document.querySelectorAll('tr[data-persistent]').forEach(row => {
+                    row.removeAttribute('data-persistent');
+                    row.classList.remove('highlighted');
+                });
+                document.querySelectorAll('.timeline-segment').forEach(s => s.classList.remove('active'));
+            }
+        });
+
+        // Radio button handlers
+        document.querySelectorAll('.timezone-radio').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    currentTimezone = this.value;
+                    updateAllTimezones(currentTimezone);
+                }
+            });
+        });
+
+        function updateAllTimezones(tz) {
+            // Update all timeline times with timezone labels
+            document.querySelectorAll('.luka-time, .ar-time').forEach(timeEl => {
+                const tzEl = timeEl.querySelector('.label-tz');
+                if (!tzEl) return; // Skip if timezone element not found
+                
+                const sfTime = timeEl.getAttribute('data-sf');
+                const fraTime = timeEl.getAttribute('data-fra');
+                const delTime = timeEl.getAttribute('data-del');
+                const sfTz = tzEl.getAttribute('data-sf');
+                const fraTz = tzEl.getAttribute('data-fra');
+                const delTz = tzEl.getAttribute('data-del');
+                const tzClass = timeEl.classList.contains('luka-time') ? 'luka-tz' : 'ar-tz';
+                
+                // Determine which time to show based on label context
+                const cityLabel = timeEl.parentElement.querySelector('.label-city');
+                if (!cityLabel) return;
+                
+                const city = cityLabel.textContent.trim();
+                
+                if (tz === 'all') {
+                    // In Auto mode, show location-appropriate timezone for each point
+                    if (city === 'SFO') {
+                        timeEl.innerHTML = sfTime + ' <span class="label-tz ' + tzClass + '" data-sf="' + sfTz + '" data-fra="' + fraTz + '" data-del="' + delTz + '">' + sfTz + '</span>';
+                    } else if (city === 'FRA') {
+                        timeEl.innerHTML = fraTime + ' <span class="label-tz ' + tzClass + '" data-sf="' + sfTz + '" data-fra="' + fraTz + '" data-del="' + delTz + '">' + fraTz + '</span>';
+                    } else if (city === 'DXB') {
+                        // For Dubai, show the time from FRA column but display GST timezone
+                        timeEl.innerHTML = fraTime + ' <span class="label-tz ' + tzClass + '" data-sf="' + sfTz + '" data-fra="' + fraTz + '" data-del="' + delTz + '">GST</span>';
+                    } else if (city === 'DEL') {
+                        timeEl.innerHTML = delTime + ' <span class="label-tz ' + tzClass + '" data-sf="' + sfTz + '" data-fra="' + fraTz + '" data-del="' + delTz + '">' + delTz + '</span>';
+                    }
+                } else {
+                    // Show selected timezone time
+                    const time = timeEl.getAttribute(`data-${tz}`);
+                    if (time) {
+                        const config = timezoneConfig[tz];
+                        timeEl.innerHTML = time + ' <span class="label-tz ' + tzClass + '" data-sf="' + sfTz + '" data-fra="' + fraTz + '" data-del="' + delTz + '">' + config.abbr + '</span>';
+                    }
+                }
+            });
+
+            // Update summary times
+            updateSummaryTimes(tz);
+            
+            // Update journey details tables (always show all columns in Auto mode)
+            updateJourneyDetailsTables(tz);
+        }
+
+        function updateJourneyDetailsTables(tz) {
+            document.querySelectorAll('.journey-details-card').forEach(card => {
+                // In Auto mode, always show all timezone columns
+                if (tz === 'all') {
+                    // Show all columns
+                    card.querySelectorAll('.sf-col, .fra-col, .del-col').forEach(el => {
+                        el.style.display = '';
+                    });
+                    card.querySelectorAll('.table-header-all').forEach(el => {
+                        el.style.display = '';
+                    });
+                    card.querySelectorAll('.table-header-single').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                } else {
+                    // Hide all columns
+                    card.querySelectorAll('.sf-col, .fra-col, .del-col').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    
+                    // Show selected column
+                    card.querySelectorAll(`.${tz}-col`).forEach(el => {
+                        el.style.display = '';
+                    });
+                    
+                    // Update headers
+                    card.querySelectorAll('.table-header-all').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    card.querySelectorAll('.table-header-single').forEach(el => {
+                        el.style.display = '';
+                        const config = timezoneConfig[tz];
+                        el.querySelector('.single-tz-label').textContent = config.name;
+                        el.querySelector('.single-tz-offset').textContent = `${config.abbr} (${config.offset})`;
+                    });
+                }
+            });
+        }
+
+        function updateSummaryTimes(tz) {
+            // Update Luka's summary
+            const lukaDep = document.querySelector('.luka-departure');
+            const lukaArr = document.querySelector('.luka-arrival');
+            
+            if (tz === 'all') {
+                lukaDep.textContent = lukaDep.getAttribute('data-sf');
+                lukaArr.textContent = lukaArr.getAttribute('data-del');
+            } else {
+                lukaDep.textContent = lukaDep.getAttribute(`data-${tz}`);
+                lukaArr.textContent = lukaArr.getAttribute(`data-${tz}`);
+            }
+            
+            // Update AR's summary
+            const arDep = document.querySelector('.ar-departure');
+            const arArr = document.querySelector('.ar-arrival');
+            
+            if (tz === 'all') {
+                arDep.textContent = arDep.getAttribute('data-sf');
+                arArr.textContent = arArr.getAttribute('data-del');
+            } else {
+                arDep.textContent = arDep.getAttribute(`data-${tz}`);
+                arArr.textContent = arArr.getAttribute(`data-${tz}`);
+            }
+        }
+
+        // Console testing commands
+        window.setTestTime = function(dateString) {
+            testTimeOverride = new Date(dateString);
+            updateStatusTip();
+            updateFlightStatus();
+            console.log('Test time set to:', testTimeOverride);
+        };
+
+        window.resetToCurrentTime = function() {
+            testTimeOverride = null;
+            updateStatusTip();
+            updateFlightStatus();
+            console.log('Reset to current time');
+        };
+
+        window.testBeforeFlight = function() {
+            setTestTime('2026-01-20T12:00:00-08:00');
+        };
+
+        window.testInFlight1 = function() {
+            // During Luka's Flight 1
+            setTestTime('2026-01-21T20:00:00-08:00');
+        };
+
+        window.testInLayover = function() {
+            // During Luka's layover
+            setTestTime('2026-01-22T18:00:00+01:00');
+        };
+
+        window.testInFlight2 = function() {
+            // During Luka's Flight 2
+            setTestTime('2026-01-23T18:00:00+01:00');
+        };
+
+        window.testAfterLanding = function() {
+            // After final arrival
+            setTestTime('2026-01-24T12:00:00+05:30');
+        };
+
+        window.testARFlight1 = function() {
+            // During Aditya & Ruchi's Flight 1
+            setTestTime('2026-01-22T02:00:00-08:00');
+        };
+
+        window.testARLayover = function() {
+            // During Aditya & Ruchi's layover
+            setTestTime('2026-01-22T20:00:00+04:00');
+        };
+
+        window.testARFlight2 = function() {
+            // During Aditya & Ruchi's Flight 2
+            setTestTime('2026-01-22T23:00:00+04:00');
+        };
+
+        window.testBothInFlight = function() {
+            // Test when both travelers are in flight simultaneously
+            // Luka in layover, AR in Flight 1
+            setTestTime('2026-01-22T02:00:00-08:00');
+        };
+
+        // Log available test commands
+        console.log('Flight status test commands available:');
+        console.log('  setTestTime(dateString) - Set custom test time');
+        console.log('  resetToCurrentTime() - Reset to actual current time');
+        console.log('  testBeforeFlight() - Before first flight');
+        console.log('  testInFlight1() - During Luka\'s Flight 1');
+        console.log('  testInLayover() - During Luka\'s layover');
+        console.log('  testInFlight2() - During Luka\'s Flight 2');
+        console.log('  testAfterLanding() - After final arrival');
+        console.log('  testARFlight1() - During Aditya & Ruchi\'s Flight 1');
+        console.log('  testARLayover() - During Aditya & Ruchi\'s layover');
+        console.log('  testARFlight2() - During Aditya & Ruchi\'s Flight 2');
+        console.log('  testBothInFlight() - Both travelers in flight simultaneously');
+    </script>
+</body>
+</html>
